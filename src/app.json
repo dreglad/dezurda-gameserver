@@ -1,0 +1,10 @@
+{
+  "name": "Dezurda Game",
+  "description": "Dezura multiplayer game server",
+  "env": {
+    "NPM_CONFIG_PRODUCTION": {
+      "description": "Leave as 'false' to install required devDependencies.",
+      "value": "false"
+    }
+  }
+}

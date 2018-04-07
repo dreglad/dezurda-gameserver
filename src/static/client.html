@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body { font-family: Tahoma, Geneva, sans-serif; text-align: center; }
+    </style>
+
+    <!-- dummy Symbol polyfill -->
+    <script>if (typeof(Symbol)==="undefined") { window.Symbol = function(arg) { return arg; } }</script>
+
+    <!-- colyseus.js client (npm run bundle-colyseus-client) -->
+    <script type="text/javascript" src="colyseus.js"></script>
+
+    <style type="text/css">
+      .player {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        box-sizing: border-box;
+        left: 0;
+        top: 0;
+        margin-left:-10px;
+        margin-top:-10px;
+        color: white;
+        font-size: 70%;
+        font-weight: bold;
+        padding-top: 4px;
+        border-radius: 10px;
+      }
+      .ball {
+        display: block;
+        width: 10px;
+        height: 10px;
+        position: absolute;
+        box-sizing: border-box;
+        left: 0;
+        top: 0;
+        margin-left:-5px;
+        margin-top:-5px;
+        border-radius: 5px;
+        border: black 1px solid;
+        background: white;
+      }
+
+      #field {
+        position: relative;
+        background: green;
+        width: 1000px;
+        height: 563px;
+        background: url("/field.jpg") no-repeat;
+        margin: 0 auto;
+      }
+    </style>
+
+  </head>
+  <body>
+    <div id="field">
+
+    </div>
+    <strong>Movimiento</strong><br>
+    
+    Número de ficha golpeada:
+    <select id="piece">
+      <option value="0">1</option>
+      <option value="1">2</option>
+      <option value="2">3</option>
+      <option value="3">4</option>
+      <option value="4">5</option>
+      <option value="5">6</option>
+      <option value="6">7</option>
+      <option value="7">8</option>
+      <option value="8">9</option>
+      <option value="9">10</option>
+      <option value="10">11</option>
+    </select>
+    <br>
+    Ángulo del golpe:
+    <input type="text" id="angle" style="width:40px"> [grados]
+    <br>
+    Intensidad del golpe:
+    <input type="text" id="force" style="width:80px"> [kg*m/s^2]
+    <br>
+    <button onclick="move()">Golpear</button>
+
+    <script>
+      var host = window.document.location.host.replace(/:.*/, '');
+
+      var client = new Colyseus.Client(location.protocol.replace("http", "ws") + host + (location.port ? ':' + location.port : ''));
+      var room = client.join("dezurda");
+
+      var players = {};
+      var colors = ['blue', 'red', 'green', 'blue', 'cyan', 'magenta'];
+
+      var fieldDom = document.querySelector('#field');
+
+      var ball = document.createElement("img");
+      ball.src = "ball.png";
+      ball.className = "ball"; 
+      fieldDom.appendChild(ball);
+
+      room.listen("ball", function(change) {
+        ball.style.left = change.value.x * 100 + "px";
+        ball.style.top = change.value.y * (563 / 6) + "px";
+      });
+
+      // listen to patches coming from the server
+      room.listen("players/:id", function(change) {
+        console.log('this is the', change.value.pieces.length);
+        if (change.operation === "add") {
+          players[change.path.id] = []
+          var i, dom;
+          for (i=0; i<change.value.pieces.length; i++) {
+            dom = document.createElement("div");
+            dom.className = "player"; 
+            dom.style.left = Math.abs(change.value.pieces[i].x * 100) + "px";
+            dom.style.top = Math.abs(change.value.pieces[i].y * (563 / 6)) + "px";
+            dom.style.background = colors[change.value.rightSide ? 1 : 0]
+            dom.innerHTML = i+1;
+            players[change.path.id].push(dom);
+            fieldDom.appendChild(dom);
+            console.log('added', dom);
+          }
+
+        } else if (change.operation === "remove") {
+          for (i=9; i<change.value.pieces.length; i++) {
+            fieldDom.removeChild(players[change.path.id][i]);
+          }
+          delete players[change.path.id];
+        }
+      });
+
+      room.listen("players/:id/:axis", function(change) {
+        var dom = players[ change.path.id ];
+
+        var styleAttribute = (change.path.axis === "x")
+          ? "left"
+          : "top";
+
+        dom.style[ styleAttribute ] = change.value + "px";
+      });
+
+      function move () {
+        room.send({
+          piece: document.querySelector('#piece').selectedIndex,
+          angle: parseInt(document.querySelector('#angle').value),
+          force: parseFloat(document.querySelector('#force').value)
+        });
+      }
+
+    </script>
+  </body>
+</html>
