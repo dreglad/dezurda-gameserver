@@ -7,24 +7,22 @@ export default class State {
 
     players: EntityMap<Player> = {};
     ball: number[] = { x: config.fieldSize.x/2, y: config.fieldSize.y/2 };
-    rightTurn: boolean = false;
-    score: number[] = [0, 0];
-
-    @nosync
-    something = "This attribute won't be sent to the client-side";
+    turns: number = 0;
 
     createPlayer (id: string) {
-        this.players[id] = new Player(Object.keys(this.players).length > 0);
-        console.log(this.players[id])
+        const players = Object.values(this.players)
+        this.players[id] = new Player(!players.length || !players[0].isLeft);
     }
 
     removePlayer (id: string) {
+        console.log('State.removePlayer(', id, ')')
         delete this.players[id];
     }
 
-    movePlayer (id: string, movement: any) {
+    executeTurn (id: string, movement: any) {
+        console.log(Object.keys(this.players).length);
         const player = this.players[id];
-        this.players[id].pieces[movement.piece]
+        this.turns += 1;
         // if (movement.x) {
         //     this.players[ id ].x += movement.x * 10;
 

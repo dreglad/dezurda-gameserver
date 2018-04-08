@@ -3,11 +3,11 @@ import config from './config'
 
 
 export default class Player {
-    rightSide: boolean;
     pieces: number[];
+    isLeft: boolean;
 
-    constructor(rightSide: boolean) {
-        this.rightSide = rightSide;
-        this.pieces = rightSide ? config.initialRight : config.initial;
+    constructor (isLeft?: boolean) {
+        this.isLeft = isLeft;
+        this.pieces = config[isLeft ? 'initialLeft' : 'initialRight'];
     }
 }
