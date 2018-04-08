@@ -1,7 +1,7 @@
 {
-  "name": "colyseus-examples",
+  "name": "dezuerda-gameserver",
   "version": "1.0.0",
-  "description": "Usage Examples of Colyseus Game Server",
+  "description": "De Zurda Multiplayer Game Server",
   "main": "index.js",
   "scripts": {
     "start": "nodemon --watch '**/*.ts' --exec ts-node index.ts",
@@ -12,8 +12,6 @@
   "engines": {
     "node": "8.9.1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@types/uws": "^0.13.1",
     "colyseus": "^0.9.0",
