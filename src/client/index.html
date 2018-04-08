@@ -89,10 +89,10 @@
       var room = client.join("dezurda");
 
       var players = {};
-      var colors = ['blue', 'red', 'green', 'blue', 'cyan', 'magenta'];
+
+      var colors = ['red', 'blue', 'orange'];
 
       var fieldDom = document.querySelector('#field');
-
       var ball = document.createElement("img");
       ball.src = "ball.png";
       ball.className = "ball"; 
@@ -103,9 +103,12 @@
         ball.style.top = change.value.y * (563 / 6) + "px";
       });
 
+      // room.listen("score", function(change) {
+      //   console.log('aaaaaa', change)
+      // });
+
       // listen to patches coming from the server
       room.listen("players/:id", function(change) {
-        console.log('this is the', change.value.pieces.length);
         if (change.operation === "add") {
           players[change.path.id] = []
           var i, dom;
@@ -114,16 +117,16 @@
             dom.className = "player"; 
             dom.style.left = Math.abs(change.value.pieces[i].x * 100) + "px";
             dom.style.top = Math.abs(change.value.pieces[i].y * (563 / 6)) + "px";
-            dom.style.background = colors[change.value.rightSide ? 1 : 0]
+            dom.style.background = colors[change.value.isLeft ? 1 : 0]
             dom.innerHTML = i+1;
             players[change.path.id].push(dom);
             fieldDom.appendChild(dom);
-            console.log('added', dom);
           }
 
         } else if (change.operation === "remove") {
-          for (i=9; i<change.value.pieces.length; i++) {
-            fieldDom.removeChild(players[change.path.id][i]);
+          var pieces = players[change.path.id];
+          for (i=0; i<pieces.length; i++) {
+            fieldDom.removeChild(pieces[i]);
           }
           delete players[change.path.id];
         }
