@@ -1,10 +1,10 @@
 FROM node
 
 RUN mkdir /src
-
-COPY src/package.json package.json
-
 WORKDIR /src
+
+COPY ./package.json package.json
+
 RUN npm install
 
 EXPOSE 2657

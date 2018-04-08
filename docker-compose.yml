@@ -2,9 +2,28 @@ version: '3'
 
 services:
   app:
-    build: .
+    build: ./src
     volumes:
       - ./src:/src
-    ports:
-      - "2657:2657"
+    environment:
+      - APP_PORT=2657
+      - LISTEN_HOSTNAME=localhost
     command: npm start
+    depends_on:
+      - redis
+
+  nginx:
+    build: ./nginx
+    volumes:
+      - ./nginx/app.template:/etc/nginx/conf.d/app.template
+    ports:
+      - "80:80"
+    environment:
+     - LISTEN_HOSTNAME=localhost
+     - APP_PORT=2657
+    command: /bin/bash -c "envsubst '$${LISTEN_HOSTNAME}' < /etc/nginx/conf.d/app.template > /etc/nginx/conf.d/app.conf && nginx -g 'daemon off;'" 
+    depends_on:
+      - app
+
+  redis:
+    image: redis
