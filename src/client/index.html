@@ -132,14 +132,16 @@
         }
       });
 
-      room.listen("players/:id/:axis", function(change) {
-        var dom = players[ change.path.id ];
+      room.listen("players/:id/pieces/:piece/:axis", function(change) {
+        console.log('a');
+        var dom = players[ change.path.id ][change.path.piece];
 
         var styleAttribute = (change.path.axis === "x")
           ? "left"
           : "top";
 
-        dom.style[ styleAttribute ] = change.value + "px";
+        console.log(change.value, 'aaa')
+        dom.style[ styleAttribute ] = 100 * change.value + "px";
       });
 
       function move () {

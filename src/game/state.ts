@@ -20,9 +20,14 @@ export default class State {
     }
 
     executeTurn (id: string, movement: any) {
-        console.log(Object.keys(this.players).length);
         const player = this.players[id];
         this.turns += 1;
+
+        // player.pieces[1].x = 3.3
+        // player.pieces[1].y = 2
+
+        console.log(movement.piece);
+        this.players[id].pieces[movement.piece].x += 0.1
         // if (movement.x) {
         //     this.players[ id ].x += movement.x * 10;
 
