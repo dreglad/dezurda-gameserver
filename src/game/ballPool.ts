@@ -16,8 +16,6 @@ export default (state) => {
     World.add(world, [
         Bodies.rectangle(400, 600, 1200, 50.5, { isStatic: true })
     ]);
-
-
 };
 
 var i = function() {
