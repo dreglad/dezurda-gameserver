@@ -1,3 +1,14 @@
+/* config */
+
+const pieceRadius = 0.5;
+const ballRadius = 0.25;
+const maxForce = 1.0;
+const winningScore = 2;  // 2 de 3 goles para ganar
+const fieldSize = {
+    x: 10,
+    y: 6 
+};
+
 const initialLeft = [
     { x: 3.7, y: 1.5 },
     { x: 3.7, y: 3 },
@@ -6,25 +17,19 @@ const initialLeft = [
     { x: 2.8, y: 4 }
 ];
 
-const fieldSize = { x: 10, y: 6 };
-
-const pieceDiameter = 1.0;
-
-const ballDiameter = 0.5;
-
-const maxForce = 1.0;
+const initialRight = initialLeft.map(piece => {
+    // Copiar el estado inicial de left, pero en espejo
+    return {
+        x: Math.abs((fieldSize.x/2) - (piece.x)) + fieldSize.x/2,
+        y: piece.y
+    }
+});
 
 export default {
     fieldSize,
-    pieceDiameter,
+    ballRadius,
+    pieceRadius,
     maxForce,
-    ballDiameter,
     initialLeft,
-    // Copiar el estado inicial de left, pero en espejo
-    initialRight: initialLeft.map(piece => {
-        return {
-            x: Math.abs((fieldSize.x/2) - (piece.x)) + fieldSize.x/2,
-            y: piece.y
-        }
-    })
+    initialRight
 }

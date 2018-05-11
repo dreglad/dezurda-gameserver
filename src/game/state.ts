@@ -9,35 +9,45 @@ export default class State {
     players: EntityMap<Player> = {};
 
     // La posición inicial del balón es justo a la mitad del campo
-    ball: number[] = {
-        x: config.fieldSize.x/2,
-        y: config.fieldSize.y/2
-    };
+    ball: number[];
 
     // Número de turnos transcurridos
     turns: number = 0;
 
+    error: string = '';
+
+    reset (): void {
+        this.error = '';
+        this.turns = 0;
+        this.ball = {
+            x: config.fieldSize.x/2,
+            y: config.fieldSize.y/2
+        };
+    }
+
     createPlayer (id: string) {
-        const players = Object.values(this.players)
+        const players = Object.values(this.players);
 
-        // El jugador es izquierdo o no?
-        const isLeft = !players.length || !players[0].isLeft
-
-        // Crear nuevo jugador
+        // El jugador es izquierdo o derecho?
+        const isLeft = players.length === 0 || !players[0].isLeft
         this.players[id] = new Player(isLeft);
+
+        this.reset();
     }
 
     removePlayer (id: string) {
-        console.log('State.removePlayer(', id, ')')
+        console.log('State.removePlayer(), id:', id);
         delete this.players[id];
+        this.reset();
     }
 
     executeTurn (id: string, movement: any) {
+        console.log('State.executeTurn(), id:', id, ' movement:', movement);
+
         const player = this.players[id];
         const { piece, angle, force } = movement
 
         // Validar movimiento
-
         player.error = null
         if (Number.isInteger(piece) || piece < 0 || piece > this.players[id].pieces.length) {
             player.error = 'Número de pieza inválido'
@@ -48,17 +58,17 @@ export default class State {
         }
 
         if (player.error) {
-            return        
+            console.log('Error:', player.error)
+            return
         }
 
         const piecePosition = this.players[id].pieces[piece];
 
         // TODO: Calcular posiciones finales (física)
-        piecePosition.x += 0.1
+        piecePosition.x += 0.1;
 
         // Aumentar número de turnos
         this.turns += 1;
-
         // player.pieces[1].x = 3.3
         // player.pieces[1].y = 2
 

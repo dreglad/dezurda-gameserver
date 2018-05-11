@@ -14,11 +14,15 @@
   },
   "dependencies": {
     "@types/uws": "^0.13.1",
+    "better-console": "^1.0.1",
     "colyseus": "^0.9.0",
     "colyseus.js": "^0.9.0",
     "express": "^4.14.0",
     "matter-js": "^0.14.1",
     "nodemon": "^1.11.0",
+    "p2": "^0.7.1",
+    "planck-js": "^0.1.44",
+    "print": "^1.1.0",
     "serve-index": "^1.8.0",
     "superagent": "^3.8.1"
   },

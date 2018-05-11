@@ -2,10 +2,12 @@ import { Room, nosync } from "colyseus";
 import Player from './player'
 import State from './state'
 import config from './config'
+const console = require('better-console');
+const print = require('print');
 
 
 export class DezurdaRoom extends Room<State> {
-    maxClients = 2; 
+    maxClients = 2;
 
     onInit (options) {
         console.log("Room.onInit(), options:", options);
@@ -13,16 +15,16 @@ export class DezurdaRoom extends Room<State> {
     }
 
     requestJoin (options, isNew?: boolean) {
-        console.log("Room.requestJoin(), isNew:", isNew, ', options:', options)
+        // print.out("Room.requestJoin(), isNew:", isNew, ', options:', options)
         // Ensure clientId is correctly passed
         return !!options.clientId
     }
 
     onJoin (client, options) {
-        console.log("Room.requestJoin(), sessionID:", client.sessionId, ', options:', options);
-        console.log("State before join:", this.state);
+        console.debug("Room.requestJoin(), sessionID:", client.sessionId, ', options:', options);
+        console.log("State before join:", print(this.state));
         this.state.createPlayer(client.sessionId);
-        console.log("State after join:", this.state);
+        console.log("State after join:", print(this.state));
     }
 
     onLeave (client) {
