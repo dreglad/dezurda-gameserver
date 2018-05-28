@@ -47,7 +47,7 @@ export default class State {
         const player = this.players[id];
 
         if (player.isLeft && this.turns % 2 !== 0) {
-            player.error = 'No es tu turno';
+            player.error = { code: 1, message: 'No es tu turno' };
             console.log(player.error);
             return
         }
@@ -59,11 +59,11 @@ export default class State {
 
         player.error = null
         if (!Number.isInteger(piece) || piece < 0 || piece >= this.players[id].pieces.length) {
-            player.error = 'Número de pieza inválido'
+            player.error = { code: 2, message: 'Número de pieza inválido' };
         } else if (isNaN(force) || force < 0 || force > config.maxForce) {
-            player.error = 'Magnitud de la fuerza inválida'
+            player.error = { code: 3, message: 'Magnitud de la fuerza inválida' };
         } else if (!Number.isInteger(angle) || angle <= 0 || angle > 365) {
-            player.error = 'Ámgulo inválido'
+            player.error = { code: 4, message: 'Ángulo inválido' };
         }
 
         if (player.error) {
