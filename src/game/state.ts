@@ -54,7 +54,7 @@ export default class State {
             return
         }
         player.error = null
-        if (!Number.isInteger(piece) || piece < 0 || piece > this.players[id].pieces.length) {
+        if (!Number.isInteger(piece) || piece < 0 || piece >= this.players[id].pieces.length) {
             player.error = 'Número de pieza inválido'
         } else if (isNaN(force) || force < 0 || force > config.maxForce) {
             player.error = 'Magnitud de la fuerza inválida'
