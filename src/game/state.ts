@@ -49,10 +49,8 @@ export default class State {
 
         // Validar movimiento
 
-        if (!piece || !angle || !force ) {
-            player.error = 'Movimiento incorrecto. Necesario "piece", "angle" y "force"'
-            return
-        }
+        // if (this.turns % 2)
+
         player.error = null
         if (!Number.isInteger(piece) || piece < 0 || piece >= this.players[id].pieces.length) {
             player.error = 'Número de pieza inválido'
@@ -68,9 +66,26 @@ export default class State {
         }
 
         const piecePosition = this.players[id].pieces[piece];
-
         // TODO: Calcular posiciones finales (física)
         piecePosition.x += 0.1;
+
+        function getRandomArbitrary(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        console.log('aaa')
+        const players = Object.keys(this.players)
+
+        players.forEach(player => {
+            this.players[player]
+            .pieces.forEach(piece => {
+                piece.x = getRandomArbitrary(0.5, 9.5)
+            piece.y = getRandomArbitrary(0.5, 5.5)
+            })
+        })
+
+        this.ball.x = getRandomArbitrary(0.5, 9.5)
+        this.ball.y = getRandomArbitrary(0.5, 9.5)
 
         // Aumentar número de turnos
         this.turns += 1;
