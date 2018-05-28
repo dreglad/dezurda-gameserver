@@ -48,6 +48,11 @@ export default class State {
         const { piece, angle, force } = movement
 
         // Validar movimiento
+
+        if (!piece || !angle || !force ) {
+            player.error = 'Movimiento incorrecto. Necesario "piece", "angle" y "force"'
+            return
+        }
         player.error = null
         if (Number.isInteger(piece) || piece < 0 || piece > this.players[id].pieces.length) {
             player.error = 'Número de pieza inválido'
