@@ -1,7 +1,18 @@
 import { EntityMap, nosync } from "colyseus";
 import Player from './player'
 import config from './config'
+// import createWorld from './physics'
 
+// // const world = createWorld([{x: 0, y: 0 }, {x: 1.6, y: 1.6 }], [{x: 1, y: 1 }], {x: 2, y: 2 })
+
+// // // for (var body = world.getBodyList(); body; body = body.getNext()) {
+// // //   for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
+// // //     // draw or update fixture
+// // //     if (fixture.getType() == 'circle') {
+// // //         console.log(fixture)
+// // //     }
+// // //   }
+// // // }
 
 export default class State {
 
@@ -14,11 +25,14 @@ export default class State {
     // Número de turnos transcurridos
     turns: number = 0;
 
+    ended: boolean = false;
+
+    winningScore: number = 3;
+
     error: string = '';
 
     reset (): void {
         this.error = '';
-        this.turns = 0;
         this.ball = {
             x: config.fieldSize.x/2,
             y: config.fieldSize.y/2
@@ -33,12 +47,18 @@ export default class State {
         this.players[id] = new Player(isLeft);
 
         this.reset();
+        this.turns = 0;
     }
 
     removePlayer (id: string) {
         console.log('State.removePlayer(), id:', id);
         delete this.players[id];
         this.reset();
+        this.turns = 0;
+    }
+
+    reportWinner (Player: player) {
+        console.log('About to report winner')
     }
 
     executeTurn (id: string, movement: any) {
@@ -46,7 +66,15 @@ export default class State {
 
         const player = this.players[id];
 
-        if (player.isLeft && this.turns % 2 !== 0) {
+        if (this.ended) {
+            player.error = { code: 5, message: 'Esta partida ha finalizado' }
+            console.log(player.error)
+            return
+        }
+
+        console.log(player.isLeft)
+        console.log(this.turns % 2)
+        if ((player.isLeft && this.turns % 2 !== 0) || (!player.isLeft && this.turns % 2 !== 1)) {
             player.error = { code: 1, message: 'No es tu turno' };
             console.log(player.error);
             return
@@ -79,14 +107,13 @@ export default class State {
             return Math.random() * (max - min) + min;
         }
 
-        console.log('aaa')
         const players = Object.keys(this.players)
 
         players.forEach(player => {
             this.players[player]
             .pieces.forEach(piece => {
                 piece.x = getRandomArbitrary(0.5, 9.5)
-            piece.y = getRandomArbitrary(0.5, 5.5)
+                piece.y = getRandomArbitrary(0.5, 5.5)
             })
         })
 
@@ -94,7 +121,19 @@ export default class State {
         this.ball.y = getRandomArbitrary(0.5, 9.5)
 
         // Aumentar número de turnos
-        this.turns ++;
+        this.turns++;
+
+        if (Math.random() > 0.8) {
+            const scoredPlayer = player
+            if (scoredPlayer.score >= this.winningScore) {
+                console.log('player WON')
+                this.reportWinner(scoredPlayer)
+                this.ended = true
+            } else {
+                this.reset();
+            }
+        }
+
         // player.pieces[1].x = 3.3
         // player.pieces[1].y = 2
 
