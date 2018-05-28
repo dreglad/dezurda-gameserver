@@ -45,6 +45,12 @@ export default class State {
         console.log('State.executeTurn(), id:', id, ' movement:', movement);
 
         const player = this.players[id];
+
+        if (player.isLeft && this.turns % 2 !== 0) {
+            player.error = 'No es tu turno';
+            console.log(player.error);
+            return
+        }
         const { piece, angle, force } = movement
 
         // Validar movimiento
@@ -88,7 +94,7 @@ export default class State {
         this.ball.y = getRandomArbitrary(0.5, 9.5)
 
         // Aumentar número de turnos
-        this.turns += 1;
+        this.turns ++;
         // player.pieces[1].x = 3.3
         // player.pieces[1].y = 2
 
