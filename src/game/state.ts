@@ -98,17 +98,14 @@ export default class State {
         const playerNum = playerValues.indexOf(player);
         const world = createWorld(this.players, this.ball, playerNum, piece, force, angle)
 
-        world.step(1/60)
+        world.step(120)
 
         for (var body = world.getBodyList(); body; body = body.getNext()) {
           for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
             const data = fixture.getUserData();
-            console.log(data, typeof data);
             if (typeof data == 'object' && data.type === 'piece') {
                 const piece = playerValues[data.player].pieces[data.piece];
                 const coords = toCords(body.getPosition());
-                console.log('despues', coords)
-                console.log('andrtes', piece)
                 piece.x = coords.x;
                 piece.y = coords.y;
             } else if (typeof data == 'object' && data.type === 'ball') {
@@ -117,6 +114,7 @@ export default class State {
           }
         }
 
+        this.turns++;
         this.working = false;
     }
 }
