@@ -114,9 +114,9 @@ export default function(players, ballPoint, playerNum, piece, force, angle) {
     }
   });
 
-
-  const forceVector = Vec2(1000 * force * Math.cos(angle), 1000 * force * Math.sin(angle));
-  pushedBody.applyForceToCenter(forceVector)
+  const rad = angle * Math.PI / 180
+  const forceVector = Vec2(1000 * force * Math.cos(rad), 1000 * force * Math.sin(rad));
+  pushedBody.applyForceToCenter(forceVector, true)
 
   world.on('post-solve', function(contact) {
     var fA = contact.getFixtureA(), bA = fA.getBody();
@@ -128,7 +128,7 @@ export default function(players, ballPoint, playerNum, piece, force, angle) {
 
     // do not change world immediately
     setTimeout(function() {
-      pushedBody.applyForceToCenter(forceVector)
+      // pushedBody.applyForceToCenter(forceVector)
       if (ball && goal) {
         ball.setPosition(Vec2(0, 0));
         ball.setLinearVelocity(Vec2(0, 0));

@@ -98,20 +98,29 @@ export default class State {
         const playerNum = playerValues.indexOf(player);
         const world = createWorld(this.players, this.ball, playerNum, piece, force, angle)
 
-        world.step(120)
-
-        for (var body = world.getBodyList(); body; body = body.getNext()) {
-          for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
-            const data = fixture.getUserData();
-            if (typeof data == 'object' && data.type === 'piece') {
-                const piece = playerValues[data.player].pieces[data.piece];
-                const coords = toCords(body.getPosition());
-                piece.x = coords.x;
-                piece.y = coords.y;
-            } else if (typeof data == 'object' && data.type === 'ball') {
-                this.ball = toCords(body.getPosition())
+        function doStep() {
+            console.log('step')
+            world.step(1/60)
+            for (var body = world.getBodyList(); body; body = body.getNext()) {
+              for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
+                const data = fixture.getUserData();
+                if (typeof data == 'object' && data.type === 'piece') {
+                    const piece = playerValues[data.player].pieces[data.piece];
+                    const coords = toCords(body.getPosition());
+                    piece.x = coords.x;
+                    piece.y = coords.y;
+                } else if (typeof data == 'object' && data.type === 'ball') {
+                    this.ball = toCords(body.getPosition())
+                    console.log(this.ball)
+                  }
               }
-          }
+            }
+        }
+
+        let i = 0;
+        while(i < 10) {
+            i++;
+            doStep();
         }
 
         this.turns++;
