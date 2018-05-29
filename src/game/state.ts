@@ -5,7 +5,7 @@ import createWorld from './soccer'
 
 
 function toCords(worldPos) {
-    return { x: worldPos.x+10, y: worldPos.y+6 }
+    return { x: worldPos.x+5, y: worldPos.y+3 }
 }
 
 export default class State {

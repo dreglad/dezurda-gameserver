@@ -87,7 +87,7 @@ export default function(players, ballPoint, playerNum, piece, force, angle) {
 
   row(0).forEach(function(p, i) {
     var player = world.createDynamicBody(playerBodyDef);
-    player.setPosition(toVector(p));
+    player.setPosition(p);
     player.createFixture(pl.Circle(PLAYER_R), {
       ...playerFixDef,
       userData: { type: 'piece', player: 0, piece: i }
@@ -101,7 +101,7 @@ export default function(players, ballPoint, playerNum, piece, force, angle) {
 
   row(1).forEach(function(p, i) {
     var player = world.createDynamicBody(playerBodyDef);
-    player.setPosition(toVector(p));
+    player.setPosition(p);
     player.setAngle(Math.PI);
     player.createFixture(pl.Circle(PLAYER_R), {
       ...playerFixDef,
