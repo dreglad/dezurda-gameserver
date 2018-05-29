@@ -1,18 +1,12 @@
 import { EntityMap, nosync } from "colyseus";
 import Player from './player'
 import config from './config'
-// import createWorld from './physics'
+import createWorld from './soccer'
 
-// // const world = createWorld([{x: 0, y: 0 }, {x: 1.6, y: 1.6 }], [{x: 1, y: 1 }], {x: 2, y: 2 })
 
-// // // for (var body = world.getBodyList(); body; body = body.getNext()) {
-// // //   for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
-// // //     // draw or update fixture
-// // //     if (fixture.getType() == 'circle') {
-// // //         console.log(fixture)
-// // //     }
-// // //   }
-// // // }
+function toCords(worldPos) {
+    return { x: worldPos.x+10, y: worldPos.y+6 }
+}
 
 export default class State {
 
@@ -28,6 +22,8 @@ export default class State {
     ended: boolean = false;
 
     winningScore: number = 3;
+
+    working: boolean = false;
 
     error: string = '';
 
@@ -79,18 +75,15 @@ export default class State {
             console.log(player.error);
             return
         }
-        const { piece, angle, force } = movement
 
-        // Validar movimiento
-
-        // if (this.turns % 2)
+        const { piece, angle, force, token } = movement
 
         player.error = null
         if (!Number.isInteger(piece) || piece < 0 || piece >= this.players[id].pieces.length) {
             player.error = { code: 2, message: 'Número de pieza inválido' };
-        } else if (isNaN(force) || force < 0 || force > config.maxForce) {
+        } else if (isNaN(force) || force <= 0 || force > config.maxForce) {
             player.error = { code: 3, message: 'Magnitud de la fuerza inválida' };
-        } else if (!Number.isInteger(angle) || angle <= 0 || angle > 365) {
+        } else if (!Number.isInteger(angle) || angle < 0 || angle > 365) {
             player.error = { code: 4, message: 'Ángulo inválido' };
         }
 
@@ -99,49 +92,31 @@ export default class State {
             return
         }
 
-        const piecePosition = this.players[id].pieces[piece];
-        // TODO: Calcular posiciones finales (física)
-        piecePosition.x += 0.1;
+        this.working = true;
 
-        function getRandomArbitrary(min, max) {
-            return Math.random() * (max - min) + min;
+        const playerValues = Object.values(this.players);
+        const playerNum = playerValues.indexOf(player);
+        const world = createWorld(this.players, this.ball, playerNum, piece, force, angle)
+
+        world.step(1/60)
+
+        for (var body = world.getBodyList(); body; body = body.getNext()) {
+          for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
+            const data = fixture.getUserData();
+            console.log(data, typeof data);
+            if (typeof data == 'object' && data.type === 'piece') {
+                const piece = playerValues[data.player].pieces[data.piece];
+                const coords = toCords(body.getPosition());
+                console.log('despues', coords)
+                console.log('andrtes', piece)
+                piece.x = coords.x;
+                piece.y = coords.y;
+            } else if (typeof data == 'object' && data.type === 'ball') {
+                this.ball = toCords(body.getPosition())
+              }
+          }
         }
 
-        const players = Object.keys(this.players)
-
-        players.forEach(player => {
-            this.players[player]
-            .pieces.forEach(piece => {
-                piece.x = getRandomArbitrary(0.5, 9.5)
-                piece.y = getRandomArbitrary(0.5, 5.5)
-            })
-        })
-
-        this.ball.x = getRandomArbitrary(0.5, 9.5)
-        this.ball.y = getRandomArbitrary(0.5, 9.5)
-
-        // Aumentar número de turnos
-        this.turns++;
-
-        if (Math.random() > 0.8) {
-            const scoredPlayer = player
-            if (scoredPlayer.score >= this.winningScore) {
-                console.log('player WON')
-                this.reportWinner(scoredPlayer)
-                this.ended = true
-            } else {
-                this.reset();
-            }
-        }
-
-        // player.pieces[1].x = 3.3
-        // player.pieces[1].y = 2
-
-        // if (movement.x) {
-        //     this.players[ id ].x += movement.x * 10;
-
-        // } else if (movement.y) {
-        //     this.players[ id ].y += movement.y * 10;
-        // }
+        this.working = false;
     }
 }
