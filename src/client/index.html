@@ -66,21 +66,22 @@
       <option value="2">3</option>
       <option value="3">4</option>
       <option value="4">5</option>
-      <option value="5">6</option>
-      <option value="6">7</option>
-      <option value="7">8</option>
-      <option value="8">9</option>
-      <option value="9">10</option>
-      <option value="10">11</option>
     </select>
     <br>
+
     Ángulo del golpe:
-    <input type="text" id="angle" style="width:40px"> [grados]
+    <input type="text" value="0" id="angle" style="width:40px"> [grados]
     <br>
+
     Intensidad del golpe:
-    <input type="text" id="force" style="width:80px"> [kg*m/s^2]
+    <input type="text" value="1" id="force" style="width:80px"> [kg*m/s^2]
     <br>
     <button onclick="move()">Golpear</button>
+
+    <br>
+    Score: <div id="score"></div>
+
+    Working: <div id="working"></div>
 
     <script>
       var host = window.document.location.host.replace(/:.*/, '');
@@ -89,9 +90,7 @@
       var room = client.join("dezurda");
 
       var players = {};
-
-      var colors = ['red', 'blue', 'orange'];
-
+      var colors = ['red', 'blue'];
       var fieldDom = document.querySelector('#field');
       var ball = document.createElement("img");
       ball.src = "ball.png";
@@ -103,13 +102,13 @@
         ball.style.top = change.value.y * (563 / 6) + "px";
       });
 
-      // room.listen("score", function(change) {
-      //   console.log('aaaaaa', change)
-      // });
+      room.listen("ended", function(change) {
+        console.log('GAME ENDED', change)
+      });
 
-      // listen to patches coming from the server
       room.listen("players/:id", function(change) {
         if (change.operation === "add") {
+
           players[change.path.id] = []
           var i, dom;
           for (i=0; i<change.value.pieces.length; i++) {
@@ -132,15 +131,20 @@
         }
       });
 
+      room.listen("players/:id/score", function(change) {
+        console.log('Changed piece axis', change)
+        document.getElementById('score').innerHTML = change.value;
+      });
+
+      room.listen("players/:id/score", function(change) {
+        console.log('Changed piece axis', change)
+        document.getElementById('score').innerHTML = change.value;
+      });
+
       room.listen("players/:id/pieces/:piece/:axis", function(change) {
-        console.log('a');
+        console.log('Changed piece axis', change)
         var dom = players[ change.path.id ][change.path.piece];
-
-        var styleAttribute = (change.path.axis === "x")
-          ? "left"
-          : "top";
-
-        console.log(change.value, 'aaa')
+        var styleAttribute = (change.path.axis === "x") ? "left" : "top";
         dom.style[ styleAttribute ] = 100 * change.value + "px";
       });
 

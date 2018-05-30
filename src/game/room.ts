@@ -1,7 +1,6 @@
 import { Room, nosync } from "colyseus";
 import Player from './player'
 import State from './state'
-import config from './config'
 const console = require('better-console');
 const print = require('print');
 
@@ -20,7 +19,7 @@ export class DezurdaRoom extends Room<State> {
     }
 
     onJoin (client, options) {
-        console.debug("Room.requestJoin(), sessionID:", client.sessionId, ', options:', options);
+        console.debug("Room.onJoin(), sessionID:", client.sessionId, ', options:', options);
         this.state.createPlayer(client.sessionId);
     }
 

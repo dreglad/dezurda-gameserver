@@ -29,6 +29,10 @@ export default class State {
 
     reset (): void {
         this.error = '';
+        Object.values(this.players).forEach(player => {
+            player.score = 0;
+            player.setPieces();
+        })
         this.ball = {
             x: config.fieldSize.x/2,
             y: config.fieldSize.y/2
@@ -43,6 +47,7 @@ export default class State {
         this.players[id] = new Player(isLeft);
 
         this.reset();
+        // this.ended = 0;
         this.turns = 0;
     }
 
@@ -50,7 +55,6 @@ export default class State {
         console.log('State.removePlayer(), id:', id);
         delete this.players[id];
         this.reset();
-        this.ended = true;
         this.turns = 0;
     }
 
