@@ -98,7 +98,7 @@ export default class State {
 
         const playerValues = Object.values(this.players);
         const playerNum = playerValues.indexOf(player);
-        const world = createWorld(this.players, player, this.ball, playerNum, piece, force, angle, this)
+        const world = createWorld(player, this.ball, playerNum, piece, force, angle, this)
 
         console.log('step')
         world.step(1/60)
