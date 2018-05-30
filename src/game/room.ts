@@ -15,16 +15,13 @@ export class DezurdaRoom extends Room<State> {
     }
 
     requestJoin (options, isNew?: boolean) {
-        // print.out("Room.requestJoin(), isNew:", isNew, ', options:', options)
         // Ensure clientId is correctly passed
         return !!options.clientId
     }
 
     onJoin (client, options) {
         console.debug("Room.requestJoin(), sessionID:", client.sessionId, ', options:', options);
-        console.log("State before join:", print(this.state));
         this.state.createPlayer(client.sessionId);
-        console.log("State after join:", print(this.state));
     }
 
     onLeave (client) {

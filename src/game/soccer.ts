@@ -3,8 +3,6 @@ const planck = require('planck-js')
 export default function(players, ballPoint, playerNum, piece, force, angle) {
   var pl = planck, Vec2 = pl.Vec2, Math = pl.Math;
 
-  var SPI4 = Math.sin(Math.PI / 4), SPI3 = Math.sin(Math.PI / 3);
-
   var width = 10.00, height = 6.00;
 
   var PLAYER_R = 0.35;
@@ -155,12 +153,6 @@ export default function(players, ballPoint, playerNum, piece, force, angle) {
   function scale(x, y) {
     return function (v) {
       return pl.Vec2(v.x * x, v.y * y);
-    };
-  }
-
-  function translate(x, y) {
-    return function (v) {
-      return pl.Vec2(v.x + x, v.y + y);
     };
   }
 
