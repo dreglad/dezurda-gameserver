@@ -124,6 +124,7 @@ export default class State {
         }
 
         this.turns++;
+        player.lastMovement = movement;
         this.working = false;
     }
 }

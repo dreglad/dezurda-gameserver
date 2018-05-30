@@ -6,6 +6,7 @@ export default class Player {
     pieces: number[];
     isLeft: boolean;
     score: number = 0;
+    lastMovement: any = {};
 
     constructor (isLeft?: boolean) {
         this.isLeft = isLeft;
