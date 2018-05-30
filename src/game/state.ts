@@ -53,7 +53,6 @@ export default class State {
     removePlayer (id: string) {
         console.log('State.removePlayer(), id:', id);
         delete this.players[id];
-        this.reset();
         this.turns = 0;
     }
 
