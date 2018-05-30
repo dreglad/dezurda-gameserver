@@ -143,7 +143,6 @@ export default function(players, player, ballPoint, playerNum, piece, force, ang
   }
 
   function row(isLeft) {
-    const player = players[Object.keys(players)[isLeft]]
     return player.pieces.map(piece => {
      return toVector(piece)
     })
