@@ -1,6 +1,6 @@
 const planck = require('planck-js')
 
-export default function(players, ballPoint, playerNum, piece, force, angle) {
+export default function(players, player, ballPoint, playerNum, piece, force, angle, state) {
   var pl = planck, Vec2 = pl.Vec2, Math = pl.Math;
 
   var width = 10.00, height = 6.00;
@@ -130,12 +130,11 @@ export default function(players, ballPoint, playerNum, piece, force, angle) {
       if (ball && goal) {
         ball.setPosition(Vec2(0, 0));
         ball.setLinearVelocity(Vec2(0, 0));
-        // world.destroyBody(ball);
+        player.score++;
+        state.reset();
       }
     }, 1);
   });
-
-
 
   return world;
 

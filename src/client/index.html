@@ -98,8 +98,18 @@
       fieldDom.appendChild(ball);
 
       room.listen("ball", function(change) {
+        console.log("BALL", change)
         ball.style.left = change.value.x * 100 + "px";
         ball.style.top = change.value.y * (563 / 6) + "px";
+      });
+
+      room.listen("ball/:axis", function(change) {
+        console.log("BALL", change)
+        if (change.path.axis === "x") {
+          ball.style.left = change.value * 100 + "px";  
+        } else {
+          ball.style.top = change.value * (563 / 6) + "px";
+        }
       });
 
       room.listen("ended", function(change) {
@@ -132,17 +142,11 @@
       });
 
       room.listen("players/:id/score", function(change) {
-        console.log('Changed piece axis', change)
-        document.getElementById('score').innerHTML = change.value;
-      });
-
-      room.listen("players/:id/score", function(change) {
-        console.log('Changed piece axis', change)
+        console.log('Changed SCORE', change)
         document.getElementById('score').innerHTML = change.value;
       });
 
       room.listen("players/:id/pieces/:piece/:axis", function(change) {
-        console.log('Changed piece axis', change)
         var dom = players[ change.path.id ][change.path.piece];
         var styleAttribute = (change.path.axis === "x") ? "left" : "top";
         dom.style[ styleAttribute ] = 100 * change.value + "px";

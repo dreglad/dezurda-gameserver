@@ -30,7 +30,6 @@ export default class State {
     reset (): void {
         this.error = '';
         Object.values(this.players).forEach(player => {
-            player.score = 0;
             player.setPieces();
         })
         this.ball = {
@@ -47,7 +46,7 @@ export default class State {
         this.players[id] = new Player(isLeft);
 
         this.reset();
-        // this.ended = 0;
+        this.ended = 0;
         this.turns = 0;
     }
 
@@ -99,7 +98,7 @@ export default class State {
 
         const playerValues = Object.values(this.players);
         const playerNum = playerValues.indexOf(player);
-        const world = createWorld(this.players, this.ball, playerNum, piece, force, angle)
+        const world = createWorld(this.players, player, this.ball, playerNum, piece, force, angle, this)
 
         console.log('step')
         world.step(1/60)
@@ -126,7 +125,6 @@ export default class State {
                 const newBall = toCords(body.getPosition())
                 this.ball.x = newBall.x;
                 this.ball.y = newBall.y;
-                console.log('balon movio a: ', this.ball)
               }
           }
         }
