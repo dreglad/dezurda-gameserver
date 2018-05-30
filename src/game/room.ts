@@ -25,12 +25,12 @@ export class DezurdaRoom extends Room<State> {
     }
 
     onLeave (client) {
-        console.log("Room.onLeave(), client:", client);
+        console.log("Room.onLeave(), client:", client.sessionId);
         this.state.removePlayer(client.sessionId);
     }
 
     onMessage (client, data) {
-        console.log("Room.onMessage(), client:", client, ", data:", data);
+        console.log("Room.onMessage(), client:", client.sessionId, ", data:", data);
         this.state.executeTurn(client.sessionId, data);
     }
 

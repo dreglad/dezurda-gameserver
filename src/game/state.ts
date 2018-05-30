@@ -50,6 +50,7 @@ export default class State {
         console.log('State.removePlayer(), id:', id);
         delete this.players[id];
         this.reset();
+        this.ended = true;
         this.turns = 0;
     }
 
@@ -68,8 +69,6 @@ export default class State {
             return
         }
 
-        console.log(player.isLeft)
-        console.log(this.turns % 2)
         if ((player.isLeft && this.turns % 2 !== 0) || (!player.isLeft && this.turns % 2 !== 1)) {
             player.error = { code: 1, message: 'No es tu turno' };
             console.log(player.error);
@@ -98,29 +97,34 @@ export default class State {
         const playerNum = playerValues.indexOf(player);
         const world = createWorld(this.players, this.ball, playerNum, piece, force, angle)
 
-        function doStep() {
-            console.log('step')
-            world.step(1/60)
-            for (var body = world.getBodyList(); body; body = body.getNext()) {
-              for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
-                const data = fixture.getUserData();
-                if (typeof data == 'object' && data.type === 'piece') {
-                    const piece = playerValues[data.player].pieces[data.piece];
-                    const coords = toCords(body.getPosition());
-                    piece.x = coords.x;
-                    piece.y = coords.y;
-                } else if (typeof data == 'object' && data.type === 'ball') {
-                    this.ball = toCords(body.getPosition())
-                    console.log(this.ball)
-                  }
+        console.log('step')
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        world.step(1/60)
+        for (var body = world.getBodyList(); body; body = body.getNext()) {
+          for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
+            const data = fixture.getUserData();
+            if (typeof data == 'object' && data.type === 'piece') {
+                const piece = playerValues[data.player].pieces[data.piece];
+                const coords = toCords(body.getPosition());
+                piece.x = coords.x;
+                piece.y = coords.y;
+            } else if (data === 'ball') {
+                const newBall = toCords(body.getPosition())
+                this.ball.x = newBall.x;
+                this.ball.y = newBall.y;
+                console.log('balon movio a: ', this.ball)
               }
-            }
-        }
-
-        let i = 0;
-        while(i < 10) {
-            i++;
-            doStep();
+          }
         }
 
         this.turns++;
