@@ -1,6 +1,6 @@
 const planck = require('planck-js')
 
-export default function(players, player, ballPoint, playerNum, piece, force, angle) {
+export default function(players, player, ballPoint, playerNum, piece, force, angle, state) {
   var pl = planck, Vec2 = pl.Vec2, Math = pl.Math;
 
   var width = 10.00, height = 6.00;
