@@ -155,7 +155,7 @@ export default function(players, player, ballPoint, playerNum, piece, force, ang
 
   function row(isLeft) {
     const thePlayer = players[Object.keys(players)[isLeft]]
-    if (thePlayer.pieces) {
+    if (thePlayer && thePlayer.pieces) {
       return thePlayer.pieces.map(piece => {
        return toVector(piece)
       })
