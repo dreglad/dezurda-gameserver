@@ -20,22 +20,28 @@ planck.testbed('Soccer', function(testbed) {
   var world = pl.World({});
 
   var walls = [
-    Vec2(-width * .5 +0.2, -height * .5),
-    Vec2(-width * .5, -height * .5 +0.2),
+    Vec2(-width * .5, -height * .5),
+    Vec2(-width * .5, -height * .5),
     Vec2(-width * .5, -height * .2),
+
+    // portería izquierda
     Vec2(-width * .6, -height * .2),
     Vec2(-width * .6, +height * .2),
+
     Vec2(-width * .5, +height * .2),
-    Vec2(-width * .5, +height * .5 -.2),
-    Vec2(-width * .5 +.2, +height * .5),
-    Vec2(+width * .5 -.2, +height * .5),
-    Vec2(+width * .5, +height * .5 -.2),
+    Vec2(-width * .5, +height * .5),
+    Vec2(-width * .5, +height * .5),
+    Vec2(+width * .5, +height * .5),
+    Vec2(+width * .5, +height * .5),
     Vec2(+width * .5, +height * .2),
+
+    // Portería derecha
     Vec2(+width * .6, +height * .2),
     Vec2(+width * .6, -height * .2),
+
     Vec2(+width * .5, -height * .2),
-    Vec2(+width * .5, -height * .5 +.2),
-    Vec2(+width * .5 -.2, -height * .5)
+    Vec2(+width * .5, -height * .5),
+    Vec2(+width * .5, -height * .5)
   ];
 
   var goal = [
