@@ -60,7 +60,7 @@ export default class State {
         console.log('About to report winner')
     }
 
-    executeTurn (id: string, movement: any) {
+    executeTurn (id: string, movement: any, delayed) {
         console.log('State.executeTurn(), id:', id, ' movement:', movement);
 
         const player = this.players[id];
@@ -93,6 +93,7 @@ export default class State {
             return
         }
 
+        delayed.reset(); console.log('reseting timer');
         this.working = true;
 
         const playerValues = Object.values(this.players);
@@ -134,7 +135,10 @@ export default class State {
 
         if (player.score >= 3) {
             this.ended = true
+            delayed.clear();
             // TODO: Notificar a data server
+        } else {
+            delayed.reset(); console.log('reseting timer after turn');
         }
     }
 }
