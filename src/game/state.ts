@@ -93,7 +93,8 @@ export default class State {
             return
         }
 
-        delayed.reset(); console.log('reseting timer');
+        delayed.reset();
+
         this.working = true;
 
         const playerValues = Object.values(this.players);
@@ -135,6 +136,7 @@ export default class State {
         if (player.score >= 3) {
             console.log('ENDING GAME')
             delayed.clear();
+            this.reset()
             this.ended = true
             // TODO: Notificar a data server
         } else {
