@@ -46,7 +46,7 @@ export default class State {
         this.players[id] = new Player(isLeft);
 
         this.reset();
-        this.ended = 0;
+        this.ended = false;
         this.turns = 0;
     }
 
@@ -131,14 +131,17 @@ export default class State {
 
         this.turns++;
         player.lastMovement = movement;
-        this.working = false;
 
         if (player.score >= 3) {
-            this.ended = true
+            console.log('ENDING GAME')
             delayed.clear();
+            this.ended = true
             // TODO: Notificar a data server
         } else {
-            delayed.reset(); console.log('reseting timer after turn');
+            delayed.reset();
+            console.log('NO END');
         }
+
+        this.working = false;
     }
 }
