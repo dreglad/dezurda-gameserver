@@ -103,20 +103,22 @@ export default function(players, player, ballPoint, playerNum, piece, force, ang
     }
   });
 
-  row(1).forEach(function(p, i) {
-    var player = world.createDynamicBody(playerBodyDef);
-    player.setPosition(p);
-    player.setAngle(Math.PI);
-    player.createFixture(pl.Circle(PLAYER_R), {
-      ...playerFixDef,
-      userData: { type: 'piece', player: 1, piece: i }
+  if (row(1)) {
+    row(1).forEach(function(p, i) {
+      var player = world.createDynamicBody(playerBodyDef);
+      player.setPosition(p);
+      player.setAngle(Math.PI);
+      player.createFixture(pl.Circle(PLAYER_R), {
+        ...playerFixDef,
+        userData: { type: 'piece', player: 1, piece: i }
+      });
+      // player.setUserData('p1')
+      player.render = {fill : '#ff411a', stroke: 'black'};
+      if (piece == i && playerNum == 1) {
+        pushedBody = player;
+      }
     });
-    // player.setUserData('p1')
-    player.render = {fill : '#ff411a', stroke: 'black'};
-    if (piece == i && playerNum == 1) {
-      pushedBody = player;
-    }
-  });
+  }
 
   const rad = angle * Math.PI / 180
   const forceVector = Vec2(1000 * force * Math.cos(rad), 1000 * force * Math.sin(rad));

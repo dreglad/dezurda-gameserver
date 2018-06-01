@@ -131,5 +131,10 @@ export default class State {
         this.turns++;
         player.lastMovement = movement;
         this.working = false;
+
+        if (player.score >= 3) {
+            this.ended = true
+            // TODO: Notificar a data server
+        }
     }
 }
