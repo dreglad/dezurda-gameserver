@@ -142,7 +142,10 @@ export default function(players, player, ballPoint, playerNum, piece, force, ang
         console.log(player.score);
         player.score++;
         state.reset()
-        console.log(player.score);
+        if (player.score >= 3) {
+            console.log('ENDING GAME')
+            state.ended = true;
+        }
       }
     }, 1);
   });

@@ -131,18 +131,8 @@ export default class State {
         }
 
         this.turns++;
-        player.lastMovement = movement;
 
-        if (player.score >= 3) {
-            console.log('ENDING GAME')
-            delayed.clear();
-            this.reset()
-            this.ended = true
-            // TODO: Notificar a data server
-        } else {
-            delayed.reset();
-            console.log('NO END');
-        }
+        delayed.reset();
 
         this.working = false;
     }
