@@ -131,6 +131,7 @@ export default class State {
         }
 
         this.turns++;
+        player.lastMovement = movement;
 
         delayed.reset();
 
