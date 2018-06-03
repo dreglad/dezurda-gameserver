@@ -84,7 +84,7 @@ export default class State {
             player.error = { code: 2, message: 'Número de pieza inválido' };
         } else if (isNaN(force) || force <= 0 || force > config.maxForce) {
             player.error = { code: 3, message: 'Magnitud de la fuerza inválida' };
-        } else if (!Number.isInteger(angle) || angle < 0 || angle > 365) {
+        } else if (isNaN(angle) || angle < 0 || angle > 365) {
             player.error = { code: 4, message: 'Ángulo inválido' };
         }
 
