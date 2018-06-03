@@ -77,15 +77,19 @@ export default class State {
             return
         }
 
-        const { piece, angle, force, token } = movement
+        const { piece, angle, force, token, forceX, forceY } = movement
 
         player.error = null
         if (!Number.isInteger(piece) || piece < 0 || piece >= this.players[id].pieces.length) {
             player.error = { code: 2, message: 'Número de pieza inválido' };
-        } else if (isNaN(force) || force <= 0 || force > config.maxForce) {
-            player.error = { code: 3, message: 'Magnitud de la fuerza inválida' };
-        } else if (isNaN(angle) || angle < 0 || angle > 365) {
-            player.error = { code: 4, message: 'Ángulo inválido' };
+        }
+
+        if (isNaN(forceX) && isNaN(forceY)) {
+            if (isNaN(force) || force <= 0 || force > config.maxForce) {
+                player.error = { code: 3, message: 'Magnitud de la fuerza inválida' };
+            } else if (isNaN(angle) || angle < -365 || angle > 365) {
+                player.error = { code: 4, message: 'Ángulo inválido' };
+            }
         }
 
         if (player.error) {
@@ -99,7 +103,8 @@ export default class State {
 
         const playerValues = Object.values(this.players);
         const playerNum = playerValues.indexOf(player);
-        const world = createWorld(this.players, player, this.ball, playerNum, piece, force, angle, this)
+        const world = createWorld(this.players, player, this.ball, playerNum,
+                                  piece, force, angle, forceX, forceY, this)
 
         console.log('step')
         world.step(1/60)

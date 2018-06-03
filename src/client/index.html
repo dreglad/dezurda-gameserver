@@ -76,6 +76,12 @@
     Intensidad del golpe:
     <input type="text" value="1" id="force" style="width:80px"> [kg*m/s^2]
     <br>
+
+    Vector de fuerza
+    x: <input type="text" value="" id="forceX" style="width:20px"> 
+    y: <input type="text" value="" id="forceY" style="width:20px">
+    <br>
+
     <button onclick="move()">Golpear</button>
 
     <br>
@@ -156,7 +162,9 @@
         room.send({
           piece: document.querySelector('#piece').selectedIndex,
           angle: parseInt(document.querySelector('#angle').value),
-          force: parseFloat(document.querySelector('#force').value)
+          force: parseFloat(document.querySelector('#force').value),
+          forceX: parseFloat(document.querySelector('#forceX').value),
+          forceY: parseFloat(document.querySelector('#forceY').value)
         });
       }
 

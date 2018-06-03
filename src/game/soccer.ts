@@ -1,6 +1,7 @@
 const planck = require('planck-js')
 
-export default function(players, player, ballPoint, playerNum, piece, force, angle, state) {
+export default function(players, player, ballPoint, playerNum, piece,
+                        force, angle, forceX, forceY, state) {
   var pl = planck, Vec2 = pl.Vec2, Math = pl.Math;
 
   var width = 10.00, height = 6.00;
@@ -120,8 +121,14 @@ export default function(players, player, ballPoint, playerNum, piece, force, ang
     });
   }
 
-  const rad = angle * Math.PI / 180
-  const forceVector = Vec2(1000 * force * Math.cos(rad), 1000 * force * Math.sin(rad));
+  let forceVector;
+  console.log(forceY);
+  if (forceX && forceY) {
+    forceVector = Vec2(forceX, forceY);
+  } else {
+    const rad = angle * Math.PI / 180
+    forceVector = Vec2(1000 * force * Math.cos(rad), 1000 * force * Math.sin(rad));
+  }
   pushedBody.applyForceToCenter(forceVector, true)
 
   world.on('post-solve', function(contact) {
