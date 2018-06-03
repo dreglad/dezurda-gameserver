@@ -1,7 +1,7 @@
 const planck = require('planck-js')
 
 export default function(players, player, ballPoint, playerNum, piece,
-                        force, angle, forceX, forceY, state) {
+                        force, angle, forceX, forceY, wallRestitution, state) {
   var pl = planck, Vec2 = pl.Vec2, Math = pl.Math;
 
   var width = 10.00, height = 6.00;
@@ -45,7 +45,7 @@ export default function(players, player, ballPoint, playerNum, piece,
 
   var wallFixDef = {
     friction: 0.2,
-    restitution: 0.2,
+    restitution: wallRestitution || 0.3,
     userData : 'wall'
   };
   var goalFixDef = {
@@ -139,10 +139,12 @@ export default function(players, player, ballPoint, playerNum, piece,
     var ball = fA.getUserData() == ballFixDef.userData && bA || fB.getUserData() == ballFixDef.userData && bB;
     var goal = fA.getUserData() == goalFixDef.userData && bA || fB.getUserData() == goalFixDef.userData && bB;
 
+    let scored = false;
     // do not change world immediately
     setTimeout(function() {
       // pushedBody.applyForceToCenter(forceVector)
-      if (ball && goal) {
+      if (ball && goal && !scored) {
+        scored = true;
         ball.setPosition(Vec2(0, 0));
         ball.setLinearVelocity(Vec2(0, 0));
         console.log('GOOOOOOOOOOOOOOOOOOOOOL')

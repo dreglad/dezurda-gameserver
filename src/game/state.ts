@@ -77,7 +77,7 @@ export default class State {
             return
         }
 
-        const { piece, angle, force, token, forceX, forceY } = movement
+        const { piece, angle, force, token, forceX, forceY, wallRestitution } = movement
 
         player.error = null
         if (!Number.isInteger(piece) || piece < 0 || piece >= this.players[id].pieces.length) {
@@ -104,7 +104,7 @@ export default class State {
         const playerValues = Object.values(this.players);
         const playerNum = playerValues.indexOf(player);
         const world = createWorld(this.players, player, this.ball, playerNum,
-                                  piece, force, angle, forceX, forceY, this)
+                                  piece, force, angle, forceX, forceY, wallRestitution, this)
 
         console.log('step')
         world.step(1/60)
