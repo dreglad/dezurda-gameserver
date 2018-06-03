@@ -31,7 +31,7 @@ export class DezurdaRoom extends Room<State> {
 
     onJoin (client, options) {
         console.debug("Room.onJoin(), sessionID:", client.sessionId, ', options:', options);
-        this.state.createPlayer(client.sessionId);
+        this.state.createPlayer(client.sessionId, options);
         this.delayed.reset();
     }
 
