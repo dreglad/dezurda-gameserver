@@ -131,6 +131,8 @@ export default function(players, player, ballPoint, playerNum, piece,
   }
   pushedBody.applyForceToCenter(forceVector, true)
 
+  let scored = false;
+
   world.on('post-solve', function(contact) {
     var fA = contact.getFixtureA(), bA = fA.getBody();
     var fB = contact.getFixtureB(), bB = fB.getBody();
@@ -138,8 +140,7 @@ export default function(players, player, ballPoint, playerNum, piece,
     var wall = fA.getUserData() == wallFixDef.userData && bA || fB.getUserData() == wallFixDef.userData && bB;
     var ball = fA.getUserData() == ballFixDef.userData && bA || fB.getUserData() == ballFixDef.userData && bB;
     var goal = fA.getUserData() == goalFixDef.userData && bA || fB.getUserData() == goalFixDef.userData && bB;
-
-    let scored = false;
+    
     // do not change world immediately
     setTimeout(function() {
       // pushedBody.applyForceToCenter(forceVector)
