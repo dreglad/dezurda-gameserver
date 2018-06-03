@@ -43,8 +43,8 @@ export default function(players, player, ballPoint, playerNum, piece, force, ang
   ];
 
   var wallFixDef = {
-    friction: 0,
-    restitution: 0.1,
+    friction: 0.2,
+    restitution: 0.2,
     userData : 'wall'
   };
   var goalFixDef = {

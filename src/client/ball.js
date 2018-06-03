@@ -50,8 +50,8 @@ planck.testbed('Soccer', function(testbed) {
   ];
 
   var wallFixDef = {
-    friction: 0,
-    restitution: 0,
+    friction: 0.2,
+    restitution: 0.2,
     userData : 'wall'
   };
   var goalFixDef = {
