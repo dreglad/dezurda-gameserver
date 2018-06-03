@@ -150,22 +150,30 @@ export default function(players, player, ballPoint, playerNum, piece,
     // do not change world immediately
     setTimeout(function() {
       // pushedBody.applyForceToCenter(forceVector)
-      if (ball && !scored && ( player.isLeft && goalL || !player.isLeft && goalR ) ) {
+      if (ball && !scored && (goalL || goalR)) {
         scored = true;
         ball.setPosition(Vec2(0, 0));
         ball.setLinearVelocity(Vec2(0, 0));
-        console.log('GOOOOOOOOOOOOOOOOOOOOOL')
-        console.log(player.score);
-        player.score++;
-        state.reset()
-        if (player.score >= 3) {
-            console.log('ENDING GAME')
-            state.ended = true;
+
+        let goalPlayer;
+        if ( player.isLeft && goalR || !player.isLeft && goalL ) {
+          goalPlayer = player;
+          console.log('GOOOOOOOOOOOOOOOOOOOOOL')
+        } else {
+          goalPlayer = Object.values().find(p => p.isLeft != player.isLeft)
+          console.log('AUTOGOL :-(')
+        }
+        if (goalPlayer) {
+          goalPlayer.score++;
+          state.reset()
+          if (goalPlayer.score >= 3) {
+              console.log('ENDING GAME')
+              state.ended = true;
+          }
         }
       }
     }, 1);
   });
-
 
 
   return world;
