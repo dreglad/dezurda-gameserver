@@ -73,7 +73,7 @@ export default class State {
 
         const { piece, angle, force, token, forceX, forceY, wallRestitution, disableTurns } = movement
 
-        if (!disableTurns || ((player.isLeft && this.turns % 2 !== 0) || (!player.isLeft && this.turns % 2 !== 1))) {
+        if (!disableTurns && ((player.isLeft && this.turns % 2 !== 0) || (!player.isLeft && this.turns % 2 !== 1))) {
             player.error = { code: 1, message: 'No es tu turno' };
             console.log(player.error);
             return
