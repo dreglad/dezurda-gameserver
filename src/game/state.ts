@@ -71,13 +71,13 @@ export default class State {
             return
         }
 
-        if ((player.isLeft && this.turns % 2 !== 0) || (!player.isLeft && this.turns % 2 !== 1)) {
+        const { piece, angle, force, token, forceX, forceY, wallRestitution, disableTurns } = movement
+
+        if (!disableTurns && ((player.isLeft && this.turns % 2 !== 0) || (!player.isLeft && this.turns % 2 !== 1))) {
             player.error = { code: 1, message: 'No es tu turno' };
             console.log(player.error);
             return
         }
-
-        const { piece, angle, force, token, forceX, forceY, wallRestitution } = movement
 
         player.error = null
         if (!Number.isInteger(piece) || piece < 0 || piece >= this.players[id].pieces.length) {
