@@ -48,10 +48,15 @@ export default function(players, player, ballPoint, playerNum, piece,
     restitution: wallRestitution || 0.3,
     userData : 'wall'
   };
-  var goalFixDef = {
+  var goalLFixDef = {
     friction: 0,
     restitution: 1,
-    userData : 'goal'
+    userData : 'goalL'
+  };
+  var goalRFixDef = {
+    friction: 0,
+    restitution: 1,
+    userData : 'goalL'
   };
 
   var ballFixDef = {
@@ -80,8 +85,8 @@ export default function(players, player, ballPoint, playerNum, piece,
 
   world.createBody().createFixture(pl.Chain(walls, true), wallFixDef);
 
-  world.createBody(Vec2(-width * 0.5 - BALL_R, 0)).createFixture(pl.Chain(goal), goalFixDef);
-  world.createBody(Vec2(+width * 0.5 + BALL_R, 0)).createFixture(pl.Chain(goal), goalFixDef);
+  world.createBody(Vec2(-width * 0.5 - BALL_R, 0)).createFixture(pl.Chain(goal), goalLFixDef);
+  world.createBody(Vec2(+width * 0.5 + BALL_R, 0)).createFixture(pl.Chain(goal), goalRFixDef);
 
   var ball = world.createDynamicBody(ballBodyDef);
   ball.createFixture(pl.Circle(BALL_R), ballFixDef);
@@ -139,12 +144,13 @@ export default function(players, player, ballPoint, playerNum, piece,
 
     var wall = fA.getUserData() == wallFixDef.userData && bA || fB.getUserData() == wallFixDef.userData && bB;
     var ball = fA.getUserData() == ballFixDef.userData && bA || fB.getUserData() == ballFixDef.userData && bB;
-    var goal = fA.getUserData() == goalFixDef.userData && bA || fB.getUserData() == goalFixDef.userData && bB;
+    var goalL = fA.getUserData() == goalLFixDef.userData && bA || fB.getUserData() == goalLFixDef.userData && bB;
+    var goalR = fA.getUserData() == goalRFixDef.userData && bA || fB.getUserData() == goalRFixDef.userData && bB;
     
     // do not change world immediately
     setTimeout(function() {
       // pushedBody.applyForceToCenter(forceVector)
-      if (ball && goal && !scored) {
+      if (ball && !scored && ( player.isLeft && goalL || !player.isLeft && goalR ) ) {
         scored = true;
         ball.setPosition(Vec2(0, 0));
         ball.setLinearVelocity(Vec2(0, 0));
