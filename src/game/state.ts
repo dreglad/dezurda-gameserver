@@ -107,18 +107,8 @@ export default class State {
                                   piece, force, angle, forceX, forceY, wallRestitution, this)
 
         console.log('step')
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
-        world.step(1/60)
+        world.step(10/60)
+
         for (var body = world.getBodyList(); body; body = body.getNext()) {
           for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
             const data = fixture.getUserData();
