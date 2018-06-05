@@ -134,7 +134,7 @@ export default function(players, player, ballPoint, playerNum, piece,
     forceVector = Vec2(1000 * force * Math.cos(rad), 1000 * force * Math.sin(rad));
   }
 
-  if (false) {
+  if (true) {
     // Desactivado
     pushedBody.applyForceToCenter(forceVector, true)
   } else {
