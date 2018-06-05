@@ -127,8 +127,7 @@ export default function(players, player, ballPoint, playerNum, piece,
   }
 
   let forceVector;
-  console.log(forceY);
-  if (!isNaN(forceX) && !isNaN(forceY)) {
+  if (forceX != null && forceY != null && !isNaN(forceX) && !isNaN(forceY)) {
     forceVector = Vec2(forceX, forceY);
   } else {
     const rad = angle * Math.PI / 180
