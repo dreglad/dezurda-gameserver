@@ -107,7 +107,7 @@ export default class State {
                                   piece, force, angle, forceX, forceY, wallRestitution, this)
 
         console.log('step')
-        for (let i=0; i<100; i++){
+        for (let i=0; i<1000; i++){
             world.step(1/60)
         }
 
