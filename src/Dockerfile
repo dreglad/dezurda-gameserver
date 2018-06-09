@@ -6,7 +6,6 @@ WORKDIR /src
 COPY ./package.json package.json
 COPY ./package-lock.json package-lock.json
 
-RUN npm update --global
 RUN npm install
 
 EXPOSE 2657
