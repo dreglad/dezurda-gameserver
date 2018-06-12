@@ -1,20 +1,20 @@
 /* config */
 
-const pieceRadius = 3.50;
-const ballRadius = 2.30;
+const pieceRadius = 0.5;
+const ballRadius = 0.25;
 const maxForce = 1.0;
 const winningScore = 2;  // 2 de 3 goles para ganar
 const fieldSize = {
-    x: 95.4,
-    y: 60 
+    x: 10,
+    y: 6 
 };
 
 const initialLeft = [
-    { x: 37.0, y: 15.0 },
-    { x: 37.0, y: 30.0 },
-    { x: 37.0, y: 45.0 },
-    { x: 28.0, y: 20.0 },
-    { x: 28.0, y: 40.0 }
+    { x: 3.7, y: 1.5 },
+    { x: 3.7, y: 3 },
+    { x: 3.7, y: 4.5 },
+    { x: 2.8, y: 2 },
+    { x: 2.8, y: 4 }
 ];
 
 const initialRight = initialLeft.map(piece => {
