@@ -3,17 +3,17 @@ planck.testbed('Soccer', function(testbed) {
 
   var SPI4 = Math.sin(Math.PI / 4), SPI3 = Math.sin(Math.PI / 3);
 
-  var width = 10.00, height = 6.00;
+  var width = 95.4, height = 60;
 
-  var PLAYER_R = 0.35;
-  var BALL_R = 0.23;
+  var PLAYER_R = 3.5;
+  var BALL_R = 2.3;
 
   testbed.x = 0;
   testbed.y = 0;
   testbed.width = width * 1.6;
   testbed.height = height * 1.6;
-  testbed.ratio = 60;
-  testbed.mouseForce = -120;
+  testbed.ratio = 15;
+  testbed.mouseForce = -12000;
 
   pl.internal.Settings.velocityThreshold = 0;
 
@@ -86,8 +86,8 @@ planck.testbed('Soccer', function(testbed) {
 
   world.createBody().createFixture(pl.Chain(walls, true), wallFixDef);
 
-  world.createBody(Vec2(-width * 0.5 - BALL_R, 0)).createFixture(pl.Chain(goal), goalFixDef);
-  world.createBody(Vec2(+width * 0.5 + BALL_R, 0)).createFixture(pl.Chain(goal), goalFixDef);
+  world.createBody(Vec2(-width * 0.5 - 2*BALL_R, 0)).createFixture(pl.Chain(goal), goalFixDef);
+  world.createBody(Vec2(+width * 0.5 + 2*BALL_R, 0)).createFixture(pl.Chain(goal), goalFixDef);
 
   var ball = world.createDynamicBody(ballBodyDef);
   ball.createFixture(pl.Circle(BALL_R), ballFixDef);
@@ -111,10 +111,11 @@ planck.testbed('Soccer', function(testbed) {
     pushedBody = player
   });
 
-  const force = 0.9;
-  const rad = 45 * Math.PI / 180;
-  const forceVector = Vec2(1000 * force * Math.cos(rad), 1000 * force * Math.sin(rad));
-  pushedBody.applyForceToCenter(forceVector, true)
+  // const force = 0.9;
+  // const rad = 45 * Math.PI / 180;
+  // const forceVector = Vec2(100000 * force * Math.cos(rad), 100000 * force * Math.sin(rad));
+  // pushedBody.applyForceToCenter(forceVector, true)
+  // pushedBody.applyLinearImpulse(forceVector, pushedBody.getWorldCenter(), true)
 
   world.on('post-solve', function(contact) {
     var fA = contact.getFixtureA(), bA = fA.getBody();

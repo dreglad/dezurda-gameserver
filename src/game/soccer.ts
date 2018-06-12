@@ -4,10 +4,10 @@ export default function(players, player, ballPoint, playerNum, piece,
                         force, angle, forceX, forceY, wallRestitution, state) {
   var pl = planck, Vec2 = pl.Vec2, Math = pl.Math;
 
-  var width = 10.00, height = 6.00;
+  var width = 10.00 * 10, height = 6.00 * 10;
 
-  var PLAYER_R = 0.35;
-  var BALL_R = 0.23;
+  var PLAYER_R = 0.35 * 10;
+  var BALL_R = 0.23 * 10;
 
   pl.internal.Settings.velocityThreshold = 0;
 
@@ -85,8 +85,8 @@ export default function(players, player, ballPoint, playerNum, piece,
 
   world.createBody().createFixture(pl.Chain(walls, true), wallFixDef);
 
-  world.createBody(Vec2(-width * 0.5 - BALL_R, 0)).createFixture(pl.Chain(goal), goalLFixDef);
-  world.createBody(Vec2(+width * 0.5 + BALL_R, 0)).createFixture(pl.Chain(goal), goalRFixDef);
+  world.createBody(Vec2(-width * 0.5 - 2*BALL_R, 0)).createFixture(pl.Chain(goal), goalLFixDef);
+  world.createBody(Vec2(+width * 0.5 + 2*BALL_R, 0)).createFixture(pl.Chain(goal), goalRFixDef);
 
   var ball = world.createDynamicBody(ballBodyDef);
   ball.createFixture(pl.Circle(BALL_R), ballFixDef);
@@ -145,6 +145,10 @@ export default function(players, player, ballPoint, playerNum, piece,
   let scored = false;
 
   world.on('post-solve', function(contact) {
+    if (scored) {
+      console.log('skipping double post-solve / goal')
+      return;
+    }
     var fA = contact.getFixtureA(), bA = fA.getBody();
     var fB = contact.getFixtureB(), bB = fB.getBody();
 
@@ -154,19 +158,17 @@ export default function(players, player, ballPoint, playerNum, piece,
     var goalR = fA.getUserData() == goalRFixDef.userData && bA || fB.getUserData() == goalRFixDef.userData && bB;
     
     // do not change world immediately
-    setTimeout(function() {
-      // pushedBody.applyForceToCenter(forceVector)
-      if (ball && !scored && (goalL || goalR)) {
-        scored = true;
-        const goalPlayer = Object.values(players).find(player => player.isLeft == !!goalR)
-        if (goalPlayer) {
-          console.log("Gool de", goalPlayer.isLeft ? 'izquierdo' : 'derecho')
-          goalPlayer.score++;
-          console.log("Nuevo score:", goalPlayer.score)
-          state.reset()
-        }
+    // pushedBody.applyForceToCenter(forceVector)
+    if (ball && !scored && (goalL || goalR)) {
+      scored = true;
+      const goalPlayer = Object.values(players).find(player => player.isLeft == !!goalR)
+      if (goalPlayer) {
+        console.log("Gool de", goalPlayer)
+        goalPlayer.score++;
+        state.reset()
+        console.log("Depsues de reset", goalPlayer)
       }
-    }, 1);
+    }
   });
 
   return world;

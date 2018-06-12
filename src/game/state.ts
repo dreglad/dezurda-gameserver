@@ -28,6 +28,11 @@ export default class State {
     error: string = '';
 
     reset (): void {
+        if (Object.values(this.players).find(player => player.score >= this.winningScore)) {
+            // REPORT WINNER
+            console.log('WINNER')
+            this.ended = true
+        }
         this.error = '';
         Object.values(this.players).forEach(player => {
             player.setPieces();
@@ -36,12 +41,6 @@ export default class State {
             x: config.fieldSize.x/2,
             y: config.fieldSize.y/2
         };
-
-        if (Object.values(this.players).find(player => player.score >= this.winningScore)) {
-            // REPORT WINNER
-            console.log('WINNER')
-            this.ended = true
-        }
     }
 
     createPlayer (id: string) {
