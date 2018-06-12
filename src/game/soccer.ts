@@ -158,29 +158,16 @@ export default function(players, player, ballPoint, playerNum, piece,
       // pushedBody.applyForceToCenter(forceVector)
       if (ball && !scored && (goalL || goalR)) {
         scored = true;
-        ball.setPosition(Vec2(0, 0));
-        ball.setLinearVelocity(Vec2(0, 0));
-
-        let goalPlayer;
-        if ( player.isLeft && goalR || !player.isLeft && goalL ) {
-          goalPlayer = player;
-          console.log('GOOOOOOOOOOOOOOOOOOOOOL')
-        } else {
-          goalPlayer = Object.values().find(p => p.isLeft != player.isLeft)
-          console.log('AUTOGOL :-(')
-        }
+        const goalPlayer = Object.values(players).find(player => player.isLeft == !!goalR)
         if (goalPlayer) {
+          console.log("Gool de", goalPlayer.isLeft ? 'izquierdo' : 'derecho')
           goalPlayer.score++;
+          console.log("Nuevo score:", goalPlayer.score)
           state.reset()
-          if (goalPlayer.score >= 3) {
-              console.log('ENDING GAME')
-              state.ended = true;
-          }
         }
       }
     }, 1);
   });
-
 
   return world;
 
@@ -188,8 +175,8 @@ export default function(players, player, ballPoint, playerNum, piece,
     return Vec2(point.x-5, point.y-3)
   }
 
-  function row(isLeft) {
-    const thePlayer = players[Object.keys(players)[isLeft]]
+  function row(index) {
+    const thePlayer = Object.values(players).find(player => player.isLeft == !index)
     if (thePlayer && thePlayer.pieces) {
       return thePlayer.pieces.map(piece => {
        return toVector(piece)
