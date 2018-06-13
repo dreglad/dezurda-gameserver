@@ -8,6 +8,7 @@ const fieldSize = {
     x: 10.0,
     y: 6.0
 };
+const reportingUrl = 'https://wbsrvs1.openmultimedia.biz/futbolito';
 
 const initialLeft = [
     { x: 3.7, y: 1.5 },

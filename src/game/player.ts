@@ -1,4 +1,4 @@
-// Player
+import { nosync } from "colyseus";
 import config from './config'
 
 export default class Player {
@@ -7,6 +7,8 @@ export default class Player {
     score: number = 0;
     lastMovement: any = {};
     name: string = '';
+
+    @nosync
     token: string = '';
 
     constructor (isLeft?: boolean, options) {

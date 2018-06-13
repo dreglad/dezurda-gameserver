@@ -2,6 +2,7 @@ import { EntityMap, nosync } from "colyseus";
 import Player from './player'
 import config from './config'
 import createWorld from './soccer'
+const axios = require('axios');
 
 
 function toCords(worldPos) {
@@ -34,6 +35,22 @@ export default class State {
         if (Object.values(this.players).find(player => player.score >= this.winningScore)) {
             // REPORT WINNER
             console.log('WINNER')
+
+            const p1 = Object.values(players).find(p => p.isLeft === true);
+            const p2 = Object.values(players).find(p => p.isLeft === false);
+            const unixtime = Math.round((new Date()).getTime() / 1000);
+
+            if (p1.token && p2.token) {
+                const url = `${config.reportingUrl}/${p1.token}/${p2.token}/${p1.score}/${p2.score}/${unixtime}`
+                console.log('About to report winner: ', url);
+                axios.post(url).then(response => {
+                    console.log('Done reporting winner', response);
+                }).catch(error => {
+                    console.log('Error reporting winner:', error);
+                })
+            } else {
+                console.log("No winner reporting because no auth token found for both players")
+            }
             this.ended = true
         }
         this.error = '';
@@ -46,12 +63,12 @@ export default class State {
         };
     }
 
-    createPlayer (id: string) {
+    createPlayer (id: string, options) {
         const players = Object.values(this.players);
 
         // El jugador es izquierdo o derecho?
         const isLeft = players.length === 0 || !players[0].isLeft
-        this.players[id] = new Player(isLeft);
+        this.players[id] = new Player(isLeft, options);
 
         this.reset();
         this.ended = false;
