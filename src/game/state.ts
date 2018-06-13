@@ -36,8 +36,8 @@ export default class State {
             // REPORT WINNER
             console.log('WINNER')
 
-            const p1 = Object.values(players).find(p => p.isLeft === true);
-            const p2 = Object.values(players).find(p => p.isLeft === false);
+            const p1 = Object.values(this.players).find(p => p.isLeft === true);
+            const p2 = Object.values(this.players).find(p => p.isLeft === false);
             const unixtime = Math.round((new Date()).getTime() / 1000);
 
             if (p1.token && p2.token) {
