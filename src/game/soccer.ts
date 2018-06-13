@@ -159,16 +159,20 @@ export default function(players, player, ballPoint, playerNum, piece,
     
     // do not change world immediately
     // pushedBody.applyForceToCenter(forceVector)
-    if (ball && !scored && (goalL || goalR)) {
-      scored = true;
-      const goalPlayer = Object.values(players).find(player => player.isLeft == !!goalR)
-      if (goalPlayer) {
-        console.log("Gool de", goalPlayer)
-        goalPlayer.score++;
-        state.reset()
-        console.log("Depsues de reset", goalPlayer)
+    setTimeout(function() {
+      if (ball && !scored && (goalL || goalR)) {
+        scored = true;
+        const goalPlayer = Object.values(players).find(player => player.isLeft == !!goalR)
+        if (goalPlayer) {
+          ball.setPosition(Vec2(0, 0));
+          ball.setLinearVelocity(Vec2(0, 0));
+          console.log("Gool de", goalPlayer)
+          goalPlayer.score++;
+          state.reset()
+          console.log("Depsues de reset", goalPlayer)
+        }
       }
-    }
+    }, 0);
   });
 
   return world;
