@@ -134,13 +134,7 @@ export default function(players, player, ballPoint, playerNum, piece,
     forceVector = Vec2(1000 * force * Math.cos(rad), 1000 * force * Math.sin(rad));
   }
 
-  if (true) {
-    // Desactivado
-    pushedBody.applyForceToCenter(forceVector, true)
-  } else {
-    // https://github.com/shakiba/planck.js/blob/master/lib/Body.js#L839-L852
-    pushedBody.applyLinearImpulse(forceVector, pushedBody.getWorldCenter(), true)
-  }
+  pushedBody.applyForceToCenter(forceVector, true)
 
   let scored = false;
 

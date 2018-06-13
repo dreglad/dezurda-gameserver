@@ -24,7 +24,7 @@ export default class State {
 
     ended: boolean = false;
 
-    winningScore: number = config.winningScore;
+    winningScore: number = 2;
 
     working: boolean = false;
 
