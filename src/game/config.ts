@@ -5,7 +5,7 @@ const ballRadius = 0.23;
 const maxForce = 1.0;
 const winningScore = 2;
 const fieldSize = {
-    x: 9.08,
+    x: 10.0,
     y: 6.0
 };
 
