@@ -172,7 +172,7 @@ export default function(players, player, ballPoint, playerNum, piece,
   return world;
 
   function toVector(point) {
-    return Vec2(point.x-(width/2), point.y-(height/2))
+    return Vec2(point.x-(width/2)-BALL_R*2, point.y-(height/2))
   }
 
   function row(index) {
