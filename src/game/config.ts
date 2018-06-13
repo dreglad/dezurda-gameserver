@@ -1,12 +1,12 @@
 /* config */
 
-const pieceRadius = 0.5;
-const ballRadius = 0.25;
+const pieceRadius = 0.35;
+const ballRadius = 0.23;
 const maxForce = 1.0;
-const winningScore = 2;  // 2 de 3 goles para ganar
+const winningScore = 2;
 const fieldSize = {
-    x: 10,
-    y: 6 
+    x: 9.08,
+    y: 6.0
 };
 
 const initialLeft = [

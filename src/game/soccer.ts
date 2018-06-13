@@ -4,7 +4,7 @@ export default function(players, player, ballPoint, playerNum, piece,
                         force, angle, forceX, forceY, wallRestitution, state) {
   var pl = planck, Vec2 = pl.Vec2, Math = pl.Math;
 
-  var width = 9.54, height = 6.00;
+  var width = 9.08, height = 6.00;
 
   var PLAYER_R = 0.35;
   var BALL_R = 0.23;
@@ -178,7 +178,7 @@ export default function(players, player, ballPoint, playerNum, piece,
   return world;
 
   function toVector(point) {
-    return Vec2(point.x-5, point.y-3)
+    return Vec2(point.x-(width/2), point.y-(height/2))
   }
 
   function row(index) {

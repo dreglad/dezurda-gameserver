@@ -5,7 +5,10 @@ import createWorld from './soccer'
 
 
 function toCords(worldPos) {
-    return { x: worldPos.x+5, y: worldPos.y+3 }
+    return {
+        x: worldPos.x + config.fieldSize.x/2,
+        y: worldPos.y + config.fieldSize.y/2
+    }
 }
 
 export default class State {
@@ -21,7 +24,7 @@ export default class State {
 
     ended: boolean = false;
 
-    winningScore: number = 3;
+    winningScore: number = config.winningScore;
 
     working: boolean = false;
 

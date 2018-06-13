@@ -3,7 +3,7 @@ planck.testbed('Soccer', function(testbed) {
 
   var SPI4 = Math.sin(Math.PI / 4), SPI3 = Math.sin(Math.PI / 3);
 
-  var width = 9.54, height = 6.00;
+  var width = 9.08, height = 6.00;
 
   var PLAYER_R = 0.35;
   var BALL_R = 0.23;
@@ -115,7 +115,7 @@ planck.testbed('Soccer', function(testbed) {
   const rad = 45 * Math.PI / 180;
   const forceVector = Vec2(1000 * force * Math.cos(rad), 1000 * force * Math.sin(rad));
   // pushedBody.applyForceToCenter(forceVector, true)
-  pushedBody.applyLinearImpulse(forceVector, pushedBody.getWorldCenter(), true)
+  // pushedBody.applyLinearImpulse(forceVector, pushedBody.getWorldCenter(), true)
 
   world.on('post-solve', function(contact) {
     var fA = contact.getFixtureA(), bA = fA.getBody();
