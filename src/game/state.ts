@@ -62,6 +62,7 @@ export default class State {
         console.log('State.removePlayer(), id:', id);
         delete this.players[id];
         this.turns = 0;
+        this.ended = true;
     }
 
     reportWinner (Player: player) {
@@ -109,21 +110,20 @@ export default class State {
 
         this.working = true;
 
-        const playerValues = Object.values(this.players);
-        const playerNum = playerValues.indexOf(player);
-        const world = createWorld(this.players, player, this.ball, playerNum,
-                                  piece, force, angle, forceX, forceY, wallRestitution, this)
+        const world = createWorld(this.players, player, this.ball, piece, force, angle, forceX, forceY, wallRestitution, this)
 
         console.log('step')
         for (let i=0; i<1000; i++){
             world.step(1/60)
         }
 
+        const playerValues = Object.values(this.players)
+
         for (var body = world.getBodyList(); body; body = body.getNext()) {
           for (var fixture = body.getFixtureList(); fixture; fixture = fixture.getNext()) {
             const data = fixture.getUserData();
             if (typeof data == 'object' && data.type === 'piece') {
-                const piece = playerValues[data.player].pieces[data.piece];
+                const piece = playerValues.find(p => p.isLeft == data.isLeft).pieces[data.piece];
                 const coords = toCords(body.getPosition());
                 piece.x = coords.x;
                 piece.y = coords.y;

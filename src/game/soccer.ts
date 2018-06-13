@@ -1,6 +1,6 @@
 const planck = require('planck-js')
 
-export default function(players, player, ballPoint, playerNum, piece,
+export default function(players, player, ballPoint, piece,
                         force, angle, forceX, forceY, wallRestitution, state) {
   var pl = planck, Vec2 = pl.Vec2, Math = pl.Math;
 
@@ -96,32 +96,32 @@ export default function(players, player, ballPoint, playerNum, piece,
   let pushedBody = null;
 
   row(0).forEach(function(p, i) {
-    var player = world.createDynamicBody(playerBodyDef);
-    player.setPosition(p);
-    player.createFixture(pl.Circle(PLAYER_R), {
+    var piceceBody = world.createDynamicBody(playerBodyDef);
+    piceceBody.setPosition(p);
+    piceceBody.createFixture(pl.Circle(PLAYER_R), {
       ...playerFixDef,
-      userData: { type: 'piece', player: 0, piece: i }
+      userData: { type: 'piece', isLeft: true, piece: i }
     });
     // player.setUserData('p0')
-    player.render = {fill : '#0077ff', stroke: 'black'};
-    if (piece == i && playerNum == 0) {
-      pushedBody = player;
+    piceceBody.render = {fill : '#0077ff', stroke: 'black'};
+    if (piece == i && player.isLeft ) {
+      pushedBody = piceceBody;
     }
   });
 
   if (row(1)) {
     row(1).forEach(function(p, i) {
-      var player = world.createDynamicBody(playerBodyDef);
-      player.setPosition(p);
-      player.setAngle(Math.PI);
-      player.createFixture(pl.Circle(PLAYER_R), {
+      var piceceBody = world.createDynamicBody(playerBodyDef);
+      piceceBody.setPosition(p);
+      piceceBody.setAngle(Math.PI);
+      piceceBody.createFixture(pl.Circle(PLAYER_R), {
         ...playerFixDef,
-        userData: { type: 'piece', player: 1, piece: i }
+        userData: { type: 'piece', isLeft: false, piece: i }
       });
       // player.setUserData('p1')
-      player.render = {fill : '#ff411a', stroke: 'black'};
-      if (piece == i && playerNum == 1) {
-        pushedBody = player;
+      piceceBody.render = {fill : '#ff411a', stroke: 'black'};
+      if (piece == i && !player.isLeft) {
+        pushedBody = piceceBody;
       }
     });
   }
