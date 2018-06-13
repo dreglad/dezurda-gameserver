@@ -32,5 +32,6 @@ export default {
     pieceRadius,
     maxForce,
     initialLeft,
-    initialRight
+    initialRight,
+    reportingUrl
 }
