@@ -56,7 +56,7 @@ export default function(players, player, ballPoint, playerNum, piece,
   var goalRFixDef = {
     friction: 0,
     restitution: 1,
-    userData : 'goalL'
+    userData : 'goalR'
   };
 
   var ballFixDef = {
